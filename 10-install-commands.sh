@@ -12,3 +12,11 @@ fi
 
 dnf install mysql -y
 
+if [ $? -eq 0 ]
+then 
+echo "Installing MQSQL is ... success"
+else
+echo "Installation failed"
+exit 1
+fi 
+
