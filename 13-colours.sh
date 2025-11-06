@@ -14,7 +14,7 @@ then
 echo -e "$R ERROR: Please run this script with root access $N"
 exit 1
 else 
-echo "$G you are running with root accesss $N"
+echo -e "$G you are running with root accesss $N"
 fi
 
 VALIDATE (){
