@@ -5,7 +5,7 @@
 USERID=$(id -u)
 
 R="\e[31m"
-G="\e[33m"
+G="\e[32m"
 Y="\e[33m"
 N="\e[0m"
 
