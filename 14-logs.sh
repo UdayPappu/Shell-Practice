@@ -58,7 +58,7 @@ fi
 dnf list installed nginx &>>$LOG_FILE
 if [ $? -ne 0 ]
 then 
-echo "nginx is not installed... going to install" &>>$LOG_FILE
+echo "nginx is not installed... going to install" | tee -a $LOG_FILE
 dnf install nginx -y &>>$LOG_FILE
 VALIDATE $? "nginx"
 else
