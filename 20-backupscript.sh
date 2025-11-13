@@ -5,30 +5,30 @@ DEST_DIR=$2
 DAYS=${3:-14}
 USERID=$(id -u)
 
-R="\e[31m"
-G="\e[32m"
-Y="\e[33m"
-N="\e[0m"
+R="$(printf '\033[31m')"
+G="$(printf '\033[32m')"
+Y="$(printf '\033[33m')"
+N="$(printf '\033[0m')"
 
 
 LOGS_FOLDER="/var/log/shellscript-logs"
-SCRIPT_NAME=$(echo $0 | cut -d "." -f1)
+SCRIPT_NAME=$(printf "%b\n" $0 | cut -d "." -f1)
 LOG_FILE="$LOGS_FOLDER/$SCRIPT_NAME.log"
 mkdir -p $LOGS_FOLDER
 if [ $USERID -ne 0 ]
     then 
-        echo -e "$R ERROR: Please run this script with root access $N" | tee -a $LOG_FILE
+        printf "%b\n"  "$R ERROR: Please run this script with root access $N" | tee -a $LOG_FILE
         exit 1
     else 
-        echo -e "$G you are running with root accesss $N" | tee -a $LOG_FILE
+        printf "%b\n"  "$G you are running with root accesss $N" | tee -a $LOG_FILE
     fi
 
 VALIDATE (){
-if [ $1 -eq 0 ]
+if [ $1 q 0 ]
 then 
-echo -e " $2 is ... $G Success $N" | tee -a $LOG_FILE
+printf "%b\n"  " $2 is ... $G Success $N" | tee -a $LOG_FILE
 else
-echo -e " $2 ... $R Failed $N" | tee -a $LOG_FILE
+printf "%b\n"  " $2 ... $R Failed $N" | tee -a $LOG_FILE
 exit 1
 fi 
 }
@@ -36,7 +36,8 @@ fi
 
 
 USAGE (){
-    echo -e "$R USAGE: $N sh 20-backupscript.sh <source-dir> <destination-dir> <days(optional)>"
+
+    printf "%b\n"  "$R USAGE: $N sh 20-backupscript.sh <source-dir> <destination-dir> <days(optional)>"
 }
 
 if [ $# -lt 2 ]
@@ -47,12 +48,12 @@ fi
 
 if [ ! -d $SOURCE_DIR ]
 then
-    echo -e "$R source directory $SOURCE_DIR does not exist. Please check $N"
+    printf "%b\n"  "$R source directory $SOURCE_DIR does not exist. Please check $N"
     exit 1
 fi
 if [ ! -d $DEST_DIR ]
 then
-    echo -e "$R destination directory $DEST_DIR does not exist. Please check $N"
+    printf "%b\n"  "$R destination directory $DEST_DIR does not exist. Please check $N"
     exit 1
 fi
 
@@ -60,8 +61,8 @@ FILES=$(find $SOURCE_DIR -name "*.log" -mtime +$DAYS)
 
 if [ -z $FILES ]
 then
-    echo "Files to zip are $FILES "
+    printf "%b\n" "Files to zip are $FILES "
 else
-    echo "No files are older than 14 days .. skipping"
+    printf "%b\n" "No files are older than 14 days .. skipping"
 fi
 
