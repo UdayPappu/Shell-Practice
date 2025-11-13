@@ -1,5 +1,9 @@
 #!/bin/bash
 
+SOURCE_DIR=$(id -u)
+DEST_DIR=$2
+DAYS=${3:-14}
+
 R="\e[31m"
 G="\e[32m"
 Y="\e[33m"
@@ -9,9 +13,7 @@ USERID=$(id -u)
 LOGS_FOLDER="/var/log/shellscript-logs"
 SCRIPT_NAME=$(echo $0 | cut -d "." -f1)
 LOG_FILE="$LOGS_FOLDER/$SCRIPT_NAME.log"
-SOURCE_DIR=/Desktop/DevSecOps/repos/Shell-Roboshop/app-logs
 
-mkdir -p $LOGS_FOLDER
 if [ $USERID -ne 0 ]
     then 
         echo -e "$R ERROR: Please run this script with root access $N" | tee -a $LOG_FILE
@@ -30,16 +32,25 @@ exit 1
 fi 
 }
 
+mkdir -p $LOGS_FOLDER
 
+usage (){
+    echo -e "$R USAGE: $N sh 20-backupscript.sh <source-dir> <destination-dir> <days(optional)>"
+}
 
-echo "Script started executing at $(date)"
+if [ $# -lt 2 ]
+then 
+    USAGE
+fi
 
-FILES_TO_DELETE=$(find $SOURCE_DIR -name "*.log" -mtime +14)
+if [ ! -d $SOURCE_DIR ]
+then
+    echo -e "$R $SOURCE_DIR does not exist. Please check $N"
+    exit 1
+fi
+if [ ! -d $DEST_DIR_DIR ]
+then
+    echo -e "$R $DEST_DIR does not exist. Please check $N"
+    exit 1
+fi
 
-while IFS= read -r filepath
-do
-    echo "Deleting file: $filepath" | tee -a $LOG_FILE
-     rm -rf $filepath
-done <<< $FILES_TO_DELETE
-
-echo "Script executed and deleted the logs successfully"
