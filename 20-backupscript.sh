@@ -1,8 +1,9 @@
 #!/bin/bash
 
-SOURCE_DIR=$(id -u)
+SOURCE_DIR=$1
 DEST_DIR=$2
 DAYS=${3:-14}
+USERID=$(id -u)
 
 R="\e[31m"
 G="\e[32m"
@@ -41,6 +42,7 @@ USAGE (){
 if [ $# -lt 2 ]
 then 
     USAGE
+    exit 1
 fi
 
 if [ ! -d $SOURCE_DIR ]
