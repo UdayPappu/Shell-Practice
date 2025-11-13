@@ -13,7 +13,7 @@ USERID=$(id -u)
 LOGS_FOLDER="/var/log/shellscript-logs"
 SCRIPT_NAME=$(echo $0 | cut -d "." -f1)
 LOG_FILE="$LOGS_FOLDER/$SCRIPT_NAME.log"
-
+mkdir -p $LOGS_FOLDER
 if [ $USERID -ne 0 ]
     then 
         echo -e "$R ERROR: Please run this script with root access $N" | tee -a $LOG_FILE
@@ -32,9 +32,9 @@ exit 1
 fi 
 }
 
-mkdir -p $LOGS_FOLDER
 
-usage (){
+
+USAGE (){
     echo -e "$R USAGE: $N sh 20-backupscript.sh <source-dir> <destination-dir> <days(optional)>"
 }
 
@@ -45,12 +45,21 @@ fi
 
 if [ ! -d $SOURCE_DIR ]
 then
-    echo -e "$R $SOURCE_DIR does not exist. Please check $N"
+    echo -e "$R source directory $SOURCE_DIR does not exist. Please check $N"
     exit 1
 fi
-if [ ! -d $DEST_DIR_DIR ]
+if [ ! -d $DEST_DIR ]
 then
-    echo -e "$R $DEST_DIR does not exist. Please check $N"
+    echo -e "$R destination directory $DEST_DIR does not exist. Please check $N"
     exit 1
+fi
+
+FILES=$(find $SOURCE_DIR -name "*.log" -mtime +$DAYS)
+
+if [ -z $FILES ]
+then
+    echo "Files found"
+else
+    echo "No files are older than 14 days .. skipping"
 fi
 
